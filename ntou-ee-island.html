@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>海大電機島：電機系大學部學程互動地圖</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;900&display=swap">
+<style>
+:root{--sea1:#1a0508;--sea2:#8a1a10;--sand:#a0522d;--grass:#2b1b1f;--ink:#f6e3d8;--card:#2a1214;--line:#6e2a22;--gold:#ffb02e;--coral:#ff4d2e;--wave:#ff8a3d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sea1:#1a0508;--sea2:#8a1a10;--sand:#a0522d;--grass:#2b1b1f;--ink:#f6e3d8;--card:#2a1214;--line:#6e2a22;--gold:#ffb02e;--coral:#ff4d2e;--wave:#ff8a3d}}
+:root[data-theme="dark"]{--sea1:#1a0508;--sea2:#8a1a10;--sand:#a0522d;--grass:#2b1b1f;--ink:#f6e3d8;--card:#2a1214;--line:#6e2a22;--gold:#ffb02e;--coral:#ff4d2e;--wave:#ff8a3d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sea1);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;line-height:1.7}
+main{max-width:920px;margin:0 auto;padding:16px 14px 32px}
+h1{font-weight:900;font-size:clamp(26px,5vw,40px);margin:8px 0 2px;letter-spacing:.04em}
+.sub{margin:0 0 10px;opacity:.8}
+.scene{display:block;width:100%;height:auto;border-radius:22px;background:linear-gradient(var(--sea1),var(--sea2));border:3px solid var(--card)}
+.node{cursor:pointer;outline:none}
+.node:focus-visible .pill,.node:hover .pill{stroke:var(--coral);stroke-width:3}
+.pill{fill:var(--card);stroke:var(--line);stroke-width:2}
+.lab{font:700 14px "Noto Sans TC",sans-serif;fill:var(--ink);text-anchor:middle}
+.stu{animation:bob 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+.on .stu{animation:hop .7s ease-in-out infinite}
+.on .pill{fill:var(--gold);stroke:var(--gold)}
+.on .lab{fill:#173a4d}
+@keyframes bob{50%{transform:translateY(-4px)}}
+@keyframes hop{50%{transform:translateY(-14px)}}
+.wv{fill:none;stroke:var(--wave);stroke-width:2;stroke-linecap:round;opacity:.6;animation:sway 4s ease-in-out infinite alternate}
+@keyframes sway{to{transform:translateX(14px)}}
+.panel{display:grid;grid-template-columns:104px 1fr;gap:14px;margin-top:14px;align-items:start}
+.av{width:104px;height:156px;background:var(--card);border-radius:18px;border:3px solid var(--line)}
+.bubble{position:relative;background:var(--card);border:3px solid var(--line);border-radius:20px;padding:14px 18px}
+.bubble::before{content:"";position:absolute;left:-12px;top:34px;width:20px;height:20px;background:var(--card);border-left:3px solid var(--line);border-bottom:3px solid var(--line);transform:rotate(45deg)}
+.bubble h2{margin:0 0 4px;font-size:22px;font-weight:900}
+#say{margin:0 0 10px;min-height:5.2em;max-width:42em}
+.grp h3{margin:10px 0 4px;font-size:15px;font-weight:500;opacity:.75}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:3px 11px;border-radius:999px;background:var(--sea1);border:2px solid transparent;font-size:15px}
+.chip.core{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 22%,var(--card));font-weight:500}
+.note{font-size:13px;opacity:.7;margin:10px 0 0}
+.nav{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+button{font:500 16px "Noto Sans TC",sans-serif;padding:8px 18px;border-radius:999px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+button.go{background:var(--coral);border-color:var(--coral);color:#fff}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+@media (max-width:560px){.panel{grid-template-columns:1fr}.av{width:76px;height:114px}.bubble::before{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+<h1>海大電機島</h1>
+<p class="sub">點選島上受苦（？）的同學或地標，系主任帶你闖過電機系大學部的層層關卡。</p>
+
+<svg class="scene" viewBox="0 0 800 470" role="group" aria-label="電機系學程島嶼地圖">
+<defs>
+<symbol id="stu" viewBox="0 0 40 60"><rect x="9" y="30" width="22" height="22" rx="8" fill="currentColor"/><rect x="12" y="50" width="6" height="10" rx="3" fill="#2d4a5a"/><rect x="22" y="50" width="6" height="10" rx="3" fill="#2d4a5a"/><circle cx="20" cy="17" r="13" fill="#ffd9b3"/><path d="M7 15a13 13 0 0 1 26 0c-6-2-14-6-18-9-3 4-5 7-8 9z" fill="#3a2a22"/><circle cx="15" cy="19" r="1.8" fill="#222"/><circle cx="25" cy="19" r="1.8" fill="#222"/><path d="M16 24q4 4 8 0" stroke="#c0504a" stroke-width="1.6" fill="none" stroke-linecap="round"/></symbol>
+<symbol id="chair" viewBox="0 0 40 60"><rect x="7" y="29" width="26" height="24" rx="8" fill="#2f4b66"/><path d="M20 31l-4 5 4 14 4-14z" fill="#f4f1e6"/><path d="M20 34l-2 3 2 9 2-9z" fill="#d9483b"/><rect x="11" y="50" width="7" height="10" rx="3" fill="#24384a"/><rect x="22" y="50" width="7" height="10" rx="3" fill="#24384a"/><path d="M9 8L7 0l8 4zM31 8l2-8-8 4z" fill="#c1272d"/><circle cx="20" cy="17" r="13" fill="#ffd9b3"/><path d="M7 15a13 13 0 0 1 26 0c-3-4-8-6-13-6s-10 2-13 6z" fill="#b9b9b9"/><g fill="none" stroke="#222" stroke-width="1.5"><rect x="10.5" y="15" width="8" height="6" rx="2"/><rect x="21.5" y="15" width="8" height="6" rx="2"/><path d="M18.5 18h3"/></g><path d="M16 25q4 3.500 8 0" stroke="#c0504a" stroke-width="1.6" fill="none" stroke-linecap="round"/><rect x="24" y="38" width="7" height="4" rx="1" fill="#fff"/></symbol>
+</defs>
+<g aria-hidden="true"><circle cx="680" cy="70" r="26" fill="#d9362b"/><circle cx="692" cy="62" r="24" fill="var(--sea1)"/><g fill="#ffb02e" opacity=".8"><circle cx="90" cy="50" r="1.8"/><circle cx="210" cy="90" r="1.4"/><circle cx="330" cy="40" r="1.8"/><circle cx="470" cy="70" r="1.4"/><circle cx="560" cy="30" r="1.8"/><circle cx="760" cy="140" r="1.4"/></g></g><g id="waves"></g>
+<path d="M110 300L140 190L210 120L290 130L340 160L400 100L460 160L510 130L590 120L660 190L690 300L620 375L530 365L470 425L400 385L330 430L270 365L180 380Z" fill="var(--grass)" stroke="var(--sand)" stroke-width="22" stroke-linejoin="bevel"/>
+<ellipse cx="100" cy="350" rx="64" ry="26" fill="var(--sand)"/><ellipse cx="710" cy="350" rx="64" ry="26" fill="var(--sand)"/>
+<path d="M275 322Q205 260 235 197Q320 150 400 238Q480 150 565 197Q595 260 525 322" fill="none" stroke="var(--sand)" stroke-width="7" stroke-dasharray="2 14" stroke-linecap="round"/>
+<g font-size="26" aria-hidden="true"><text x="190" y="262">🔥</text><text x="595" y="268">💀</text><text x="318" y="158">🌋</text><text x="468" y="158">🔥</text></g>
+<g font-size="32" font-family="serif" fill="var(--wave)" opacity=".4" aria-hidden="true"><text x="38" y="150">∫</text><text x="34" y="250">∑</text><text x="742" y="250">π</text><text x="752" y="430">∞</text><text x="46" y="440">√</text><text x="236" y="60">∂</text><text x="590" y="448">Ω</text><text x="150" y="440">Δ</text></g>
+<g aria-hidden="true"><g transform="translate(306 222)"><defs><pattern id="hole" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="1" fill="#3a3a3a"/></pattern></defs><rect width="46" height="30" rx="3" fill="#efe3c6"/><rect x="3" y="3" width="40" height="3" fill="#d9362b"/><rect x="3" y="24" width="40" height="3" fill="#3b7fd1"/><rect x="3" y="9" width="40" height="12" fill="url(#hole)"/><rect x="21" y="13" width="3" height="4" fill="#efe3c6"/><circle cx="12" cy="15" r="3.500" fill="#ff4d2e"/><path d="M30 15h9" stroke="#c47a2c" stroke-width="3"/></g>
+<g transform="translate(446 226)" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M0 12H10l3-8 5 16 5-16 5 16 3-8H38"/><path d="M38 12h6M44 4v16M50 4v16M50 12h8"/><path d="M58 12v10M52 22h12M55 26h6"/></g></g>
+<ellipse cx="400" cy="264" rx="30" ry="9" fill="var(--sand)"/>
+<g class="node" id="chairnode" tabindex="0" role="button" aria-label="系主任"><use href="#chair" x="378" y="204" width="44" height="66"/><g class="pill-wrap"><rect class="pill" x="364" y="272" width="72" height="24" rx="12"/><text class="lab" x="400" y="289">系主任</text></g></g>
+<g id="nodes"></g>
+</svg>
+
+<section class="panel" aria-live="polite">
+<svg class="av" viewBox="0 0 40 60" aria-hidden="true"><use href="#chair" width="40" height="60"/></svg>
+<div class="bubble">
+<h2 id="ttl"></h2>
+<p id="say"></p>
+<div id="grps"></div>
+<p class="note">金邊標示為核心課程。課程依系上關聯圖整理，實際開課請以系上公告為準。</p>
+<div class="nav"><button id="prev">上一站</button><button id="next" class="go">下一站</button></div>
+</div>
+</section>
+</main>
+<script>
+const K=new Set("資料結構 複變函數 近代物理 自動控制 電機機械 通訊工程 電子電路".split(" "));
+const F=["資訊科技","電波","固態電子","電力與電子電路","控制","通訊與訊號處理"];
+const D={
+intro:{h:"歡迎來到地獄島",say:"我是電機系系主任！島上的四位同學從大一熬到大四，點一點他們，我就告訴你各層關卡要修哪些課；旁邊的地標則是共同課程、專業領域與碩士班。膽子夠大就按「下一站」出發吧！",g:[]},
+com:{h:"共同課程",say:"先看全校共同課程。除了專業課，電機系的同學還要修國文、外文、歷史、博雅、憲政等領域課程，以及體育與勞動服務，打好人文與表達的底子。",g:[["通識與基本素養",["國文領域","外文領域","歷史領域","博雅領域","憲政領域","體育","勞動服務"]]]},
+y1:{h:"大一：打好地基",say:"大一是打地基的一年！上學期從計算機概論、計算機實習、程式語言開始，搭配微積分與普通物理；下學期延續微積分、普通物理，並加入工程數學、電路學與交換電路與邏輯設計，電機專業從這裡起步。",g:[["上學期",["計算機概論","計算機實習","程式語言","微積分","普通物理","普通物理實驗"]],["下學期",["微積分","普通物理","普通物理實驗","工程數學","電路學","交換電路與邏輯設計"]]]},
+y2:{h:"大二：專業起跑",say:"大二課程最紮實！上學期有工程數學、線性代數、電磁學、電路學，並開始電子學與電工實驗；下學期接著電磁波、訊號與系統、機率學，還有核心課程資料結構與複變函數。理論與實作並進，是專業能力的關鍵一年。",g:[["上學期",["工程數學","線性代數","電磁學","電路學","電子學","電工實驗"]],["下學期",["電子學","電工實驗","電磁波","訊號與系統","機率學","資料結構","複變函數"]]]},
+y3:{h:"大三：核心課程登場",say:"大三進入核心課程！上學期的近代物理、自動控制、電機機械、通訊工程都是核心，並持續電子學與電工實驗；下學期有核心課程電子電路與電工實驗。連同大二的資料結構、複變函數，共六門核心課程採「六選四」必選。",g:[["上學期",["電子學","電工實驗","近代物理","自動控制","電機機械","通訊工程"]],["下學期",["電子電路","電工實驗"]]]},
+y4:{h:"大四：選擇專長",say:"大四是選擇專長的一年！除了電工實驗，你可以依興趣在六大專業領域中深入學習，為畢業後的就業或升學做準備。到「專業領域」地標看看每個領域在做什麼。",g:[["必修",["電工實驗"]],["專業領域",F.map(f=>f+"領域")]]},
+fld:{h:"六大專業領域",say:"資訊科技談電腦與軟硬體系統；電波談電磁波、天線與射頻；固態電子談半導體元件；電力與電子電路談電能轉換與電路設計；控制談自動化與系統控制；通訊與訊號處理談通訊系統與訊號分析。",g:[["六大領域",F]],note:"領域簡介為一般性說明。分年圖為「六選四」、稱「領域」；另一份關聯圖為「六選三」、稱「組」，並以半導體物理取代近代物理，請以系上最新公告為準。"},
+ms:{h:"碩士班：繼續深造",say:"想繼續深造？碩士班設有系統組、電子組與科技資訊組，專業必修為專題討論(4)與畢業論文(6)，其餘依專長選修專業課程，涵蓋六個專長組別。",g:[["專業必修",["專題討論(4)","畢業論文(6)"]],["分組",["系統組","電子組","科技資訊組"]],["專長組別",F.map(f=>f+"組")]]}
+};
+const M=[
+{id:"com",x:100,y:352,e:"📚",l:"共同課程"},
+{id:"y1",x:272,y:322,c:"#f59e0b",l:"大一"},
+{id:"y2",x:232,y:200,c:"#38a3d1",l:"大二"},
+{id:"y3",x:568,y:200,c:"#7c5ce0",l:"大三"},
+{id:"y4",x:528,y:322,c:"#e0568c",l:"大四"},
+{id:"fld",x:400,y:350,e:"🧭",l:"專業領域"},
+{id:"ms",x:710,y:352,e:"🎓",l:"碩士班"}];
+const ORDER=["intro","com","y1","y2","y3","y4","fld","ms"];
+const $=s=>document.querySelector(s);
+const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+let cur="intro",tm;
+$("#nodes").innerHTML=M.map((m,i)=>`<g class="node" id="n-${m.id}" data-id="${m.id}" tabindex="0" role="button" aria-label="${m.l}">`+
+(m.c?`<g class="stu" style="color:${m.c};animation-delay:${i*.3}s"><use href="#stu" x="${m.x-22}" y="${m.y-66}" width="44" height="66"/></g>`:`<text x="${m.x}" y="${m.y-6}" font-size="38" text-anchor="middle">${m.e}</text>`)+
+`<rect class="pill" x="${m.x-34}" y="${m.y+6}" width="68" height="24" rx="12"/><text class="lab" x="${m.x}" y="${m.y+23}">${m.l}</text></g>`).join("");
+$("#waves").innerHTML=Array.from({length:14},(_,i)=>`<path class="wv" style="animation-delay:${i*.4}s" d="M${40+(i*149)%720} ${30+(i*83)%420}q8-7 16 0t16 0"/>`).join("");
+function type(t){clearInterval(tm);const el=$("#say");if(reduce){el.textContent=t;return}let i=0;el.textContent="";tm=setInterval(()=>{el.textContent=t.slice(0,++i);if(i>=t.length)clearInterval(tm)},24)}
+function show(id){
+ if(!D[id])id="intro";cur=id;const d=D[id];
+ document.querySelectorAll(".node").forEach(n=>n.classList.toggle("on",n.dataset.id===id));
+ $("#ttl").textContent=d.h;type(d.say);
+ $("#grps").innerHTML=d.g.map(([t,l])=>`<div class="grp"><h3>${t}</h3><div class="chips">${l.map(c=>`<span class="chip${K.has(c)?" core":""}">${c}</span>`).join("")}</div></div>`).join("")+(d.note?`<p class="note">${d.note}</p>`:"");
+ try{history.replaceState(null,"",id==="intro"?location.pathname:"#"+id)}catch(e){}
+}
+function step(n){show(ORDER[(ORDER.indexOf(cur)+n+ORDER.length)%ORDER.length])}
+document.addEventListener("click",e=>{const n=e.target.closest(".node");if(n)show(n.id==="chairnode"?"intro":n.dataset.id)});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){const n=e.target.closest&&e.target.closest(".node");if(n){e.preventDefault();n.dispatchEvent(new MouseEvent("click",{bubbles:true}))}}});
+$("#prev").onclick=()=>step(-1);$("#next").onclick=()=>step(1);
+addEventListener("hashchange",()=>show(location.hash.slice(1)));
+show(location.hash.slice(1)||"intro");
+</script>
+</body>
+</html>
